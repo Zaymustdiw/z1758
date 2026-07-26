@@ -1,0 +1,8 @@
+{
+  "name": "Pusheen Sparkle",
+  "description": "A minimalist and mobile-responsive accessories selling website for rings and necklaces.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
