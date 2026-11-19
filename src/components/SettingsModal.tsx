@@ -13,11 +13,16 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ isOpen, onClose, currency, setCurrency, theme, setTheme }: SettingsModalProps) {
-  const isDark = theme === 'dark' || theme === 'gothic';
-  const modalBg = theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : theme === 'gothic' ? 'bg-black border-red-900' : 'bg-white/90 border-white';
-  const textColor = theme === 'gothic' ? 'text-red-100' : isDark ? 'text-zinc-100' : 'text-gray-800';
-  const subTextColor = theme === 'gothic' ? 'text-red-300' : isDark ? 'text-zinc-300' : 'text-gray-700';
-  const unselectedBg = theme === 'gothic' ? 'bg-black border-red-900 text-red-300 hover:bg-red-950' : isDark ? 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700' : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50';
+  const isDark = theme === 'dark';
+  const modalBg = isDark ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-zinc-200';
+  const textColor = isDark ? 'text-zinc-100' : 'text-zinc-900';
+  const subTextColor = isDark ? 'text-zinc-300' : 'text-zinc-700';
+  const selectedBtn = isDark
+    ? 'bg-zinc-100 border-zinc-100 text-zinc-950 shadow-sm'
+    : 'bg-zinc-950 border-zinc-950 text-white shadow-sm';
+  const unselectedBg = isDark
+    ? 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:bg-zinc-700'
+    : 'bg-[#F7F7F5] border-zinc-200 text-zinc-700 hover:bg-zinc-100';
 
   return (
     <AnimatePresence>
@@ -28,22 +33,24 @@ export function SettingsModal({ isOpen, onClose, currency, setCurrency, theme, s
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm"
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.94, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className={`relative w-full max-w-sm backdrop-blur-xl rounded-3xl shadow-2xl p-6 border ${modalBg}`}
+            exit={{ opacity: 0, scale: 0.94, y: 16 }}
+            className={`relative w-full max-w-sm rounded-3xl shadow-2xl p-6 border ${modalBg}`}
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className={`text-xl font-bold flex items-center gap-2 ${textColor}`}>
-                <Globe className="w-5 h-5 text-pink-500" />
+                <Globe className="w-5 h-5" />
                 Settings
               </h2>
-              <button 
+              <button
                 onClick={onClose}
-                className={`p-2 rounded-full transition-colors ${isDark ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'}`}
+                className={`p-2 rounded-full transition-colors cursor-pointer ${
+                  isDark ? 'bg-zinc-800 hover:bg-zinc-700 text-zinc-400' : 'bg-zinc-100 hover:bg-zinc-200 text-zinc-600'
+                }`}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -55,20 +62,16 @@ export function SettingsModal({ isOpen, onClose, currency, setCurrency, theme, s
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setCurrency('BDT')}
-                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border ${
-                      currency === 'BDT' 
-                        ? 'bg-pink-50 border-pink-400 text-pink-600 shadow-sm' 
-                        : unselectedBg
+                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border cursor-pointer ${
+                      currency === 'BDT' ? selectedBtn : unselectedBg
                     }`}
                   >
                     ৳ BDT (Taka)
                   </button>
                   <button
                     onClick={() => setCurrency('USD')}
-                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border ${
-                      currency === 'USD' 
-                        ? 'bg-pink-50 border-pink-400 text-pink-600 shadow-sm' 
-                        : unselectedBg
+                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border cursor-pointer ${
+                      currency === 'USD' ? selectedBtn : unselectedBg
                     }`}
                   >
                     $ USD
@@ -78,46 +81,36 @@ export function SettingsModal({ isOpen, onClose, currency, setCurrency, theme, s
 
               <div>
                 <label className={`text-sm font-bold flex items-center gap-2 mb-3 ${subTextColor}`}>
-                  <Moon className="w-4 h-4 text-purple-500" />
-                  Theme
+                  <Moon className="w-4 h-4" />
+                  Theme Mode
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <button
                     onClick={() => setTheme('light')}
-                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border ${
-                      theme === 'light' 
-                        ? 'bg-pink-50 border-pink-400 text-pink-600 shadow-sm' 
-                        : unselectedBg
+                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border cursor-pointer ${
+                      theme === 'light' ? selectedBtn : unselectedBg
                     }`}
                   >
                     Light
                   </button>
                   <button
                     onClick={() => setTheme('dark')}
-                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border ${
-                      theme === 'dark' 
-                        ? 'bg-zinc-800 border-zinc-500 text-zinc-100 shadow-sm ring-2 ring-zinc-500' 
-                        : unselectedBg
+                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border cursor-pointer ${
+                      theme === 'dark' ? selectedBtn : unselectedBg
                     }`}
                   >
                     Dark
                   </button>
-                  <button
-                    onClick={() => setTheme('gothic')}
-                    className={`py-3 px-4 rounded-xl font-bold text-sm transition-all border ${
-                      theme === 'gothic' 
-                        ? 'bg-black border-red-500 text-red-500 shadow-sm ring-2 ring-red-500' 
-                        : unselectedBg
-                    }`}
-                  >
-                    Gothic
-                  </button>
                 </div>
               </div>
             </div>
-            
-            <div className={`mt-8 pt-4 border-t text-center text-xs ${isDark ? 'border-zinc-800 text-zinc-500' : 'border-gray-100 text-gray-400'}`}>
-              Settings are saved automatically.
+
+            <div
+              className={`mt-8 pt-4 border-t text-center text-xs ${
+                isDark ? 'border-zinc-800 text-zinc-500' : 'border-zinc-200 text-zinc-500'
+              }`}
+            >
+              Z1758 preferences are applied immediately.
             </div>
           </motion.div>
         </div>
